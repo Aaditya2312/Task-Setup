@@ -55,6 +55,18 @@ app.put('/tasks/:taskId', (req, res) => {
     }
 })
 
+app.delete('/tasks/:taskId', (req, res) => {
+    const taskId = Number(req.params.taskId)
+    const taskIndex = taskList.findIndex(task => task.id === taskId)
+
+    if (taskIndex === -1) {
+        res.status(404).json({ error: 'Task not found' })
+    } else {
+        taskList.splice(taskIndex, 1)
+        res.status(204).send(taskList)
+    }
+})
+
 app.use((err, req, res, next) => {
     console.error(err);
     res.status(500).json({ error: 'Internal Server Error' });
